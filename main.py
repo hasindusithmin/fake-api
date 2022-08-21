@@ -2,6 +2,9 @@ from fastapi import FastAPI,HTTPException
 from fastapi.responses import RedirectResponse
 from faker import Faker
 import inspect
+import uvicorn
+
+
 description = """
 FakerAPP API helps you do awesome stuff. 🚀
 
@@ -57,7 +60,8 @@ def get_endpoint_details():
     return desc
     
 
-
+if __name__=='__main__':
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 
