@@ -1,5 +1,6 @@
 from fastapi import FastAPI,HTTPException
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from faker import Faker
 import inspect
 import uvicorn
@@ -29,6 +30,13 @@ app = FastAPI(
     }
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Create fake instance 
 fake = Faker()
