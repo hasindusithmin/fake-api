@@ -38,15 +38,7 @@ fake = Faker()
 def root():
     return '/docs'
 
-@app.get('/{type}',tags=['Use /endpoints to get available types'])
-def get_fake_data(type:str):
-    try:
-        data =  eval(f'fake.{type}()')
-        return {'data':data}
-    except:
-        raise HTTPException(status_code=404,detail=f"Generator' object has no attribute '{type}.use /endpoints to get available types")
-
-@app.get('/endpoints',tags=['it provide all available types'])
+@app.get('/endpoints',tags=['It provide all available types'])
 def get_endpoint_details():
     funcs = [func for func in dir(fake) if not (func.startswith('_') or func.startswith('__') or func.startswith('seed'))]
     docs = [inspect.getdoc(eval(f'fake.{func}')) for func in funcs]
@@ -58,10 +50,18 @@ def get_endpoint_details():
             'return':str(doc).replace('\n', '')
         })
     return desc
-    
+
+@app.get('/{type}',tags=['Use /endpoints to get available types'])
+def get_fake_data(type:str):
+    try:
+        data =  eval(f'fake.{type}()')
+        return {'data':data}
+    except:
+        raise HTTPException(status_code=404,detail=f"Generator' object has no attribute '{type}.use /endpoints to get available types")
+   
 
 if __name__=='__main__':
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
 
 
 
