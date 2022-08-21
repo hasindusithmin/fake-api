@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 from fastapi.responses import RedirectResponse
 from faker import Faker
 import inspect
@@ -34,6 +34,14 @@ fake = Faker()
 @app.get('/',response_class=RedirectResponse)
 def root():
     return '/docs'
+
+@app.get('/{type}',tags=['Use /endpoints to get available types'])
+def get_fake_data(type:str):
+    try:
+        data =  eval(f'fake.{type}()')
+        return {'data':data}
+    except:
+        raise HTTPException(status_code=404,detail=f"Generator' object has no attribute '{type}.use /endpoints to get available types")
 
 @app.get('/endpoints')
 def get_endpoint_details():
