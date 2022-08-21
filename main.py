@@ -43,7 +43,7 @@ def get_fake_data(type:str):
     except:
         raise HTTPException(status_code=404,detail=f"Generator' object has no attribute '{type}.use /endpoints to get available types")
 
-@app.get('/endpoints')
+@app.get('/endpoints',tags=['it provide all available types'])
 def get_endpoint_details():
     funcs = [func for func in dir(fake) if not (func.startswith('_') or func.startswith('__') or func.startswith('seed'))]
     docs = [inspect.getdoc(eval(f'fake.{func}')) for func in funcs]
@@ -56,6 +56,8 @@ def get_endpoint_details():
         })
     return desc
     
+
+
 
 
 
