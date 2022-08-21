@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-
-
+from faker import Faker
+import inspect
 description = """
 FakerAPP API helps you do awesome stuff. 🚀
 
@@ -27,8 +27,27 @@ app = FastAPI(
 )
 
 
+# Create fake instance 
+fake = Faker()
+
+
 @app.get('/',response_class=RedirectResponse)
 def root():
     return '/docs'
+
+@app.get('/endpoints')
+def get_endpoint_details():
+    funcs = [func for func in dir(fake) if not (func.startswith('_') or func.startswith('__') or func.startswith('seed'))]
+    docs = [inspect.getdoc(eval(f'fake.{func}')) for func in funcs]
+    desc = []
+    for i in range(len(funcs)):
+        doc = docs[i]
+        desc.append({
+            'path':f'/{funcs[i]}',
+            'return':str(doc).replace('\n', '')
+        })
+    return desc
+    
+
 
 
